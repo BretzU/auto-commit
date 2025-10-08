@@ -1,0 +1,25 @@
+name: Auto Commit Everyday
+
+on:
+  schedule:
+    - cron: "25 0 * * *"  # 07:25 pagi WIB
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Update log
+        run: |
+          echo "Update on $(date)" >> log.txt
+
+      - name: Commit changes
+        run: |
+          git config user.name "BretzU"
+          git config user.email "bretzdefa@gmail.com"
+          git add .
+          git commit -m "Auto update $(date)" || echo "No changes to commit"
+          git push
